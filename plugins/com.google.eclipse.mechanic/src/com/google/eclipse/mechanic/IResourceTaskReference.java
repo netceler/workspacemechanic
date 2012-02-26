@@ -39,4 +39,9 @@ public interface IResourceTaskReference {
    * Return the File representation of this resource. Is {@code null} when this file isn't on disk.
    */
   File asFile();
+
+  /**
+   * Return the MD5 hash of this task
+   */
+  String computeMD5() throws IOException;
 }

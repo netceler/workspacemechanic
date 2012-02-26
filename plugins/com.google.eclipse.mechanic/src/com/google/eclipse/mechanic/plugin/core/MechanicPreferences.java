@@ -90,7 +90,14 @@ public class MechanicPreferences {
    */
   public static final String SHOW_POPUP_PREF = "showPopup";
 
-//  /**
+  /**
+   * Preference string to choose if we must use a MD5 hash to detect if a task has changed
+   *
+   * <p>Stores a boolean.
+   */
+  public static final String USE_MD5_PREF = "useMD5";
+
+  //  /**
 //   * Preference string to enable web content caching.
 //   *
 //   * <p>Stores a boolean.
@@ -305,7 +312,34 @@ public class MechanicPreferences {
     prefs.setValue(SHOW_POPUP_PREF, true);
   }
 
-//  /**
+  /**
+   * Return {@code true} if we should calculate a MD5 hash to
+   * detect if a task has changed.
+   */
+  public static boolean isUseMD5() {
+    Preferences prefs = getPreferences();
+    return prefs.getBoolean(USE_MD5_PREF);
+  }
+
+  /**
+   * Disable the preference that calculates a MD5 hash.
+   */
+  public static void doNotUseMD5() {
+    Preferences prefs = getPreferences();
+    prefs.setValue(USE_MD5_PREF, false);
+  }
+
+  /**
+   * Enable preference that calculates a MD5 hash.
+   *
+   * <p>For tests only.
+   */
+  public static void useMD5() {
+    Preferences prefs = getPreferences();
+    prefs.setValue(USE_MD5_PREF, true);
+  }
+
+  //  /**
 //   * Return {@code true} if web caching is enabled.
 //   */
 //  public static boolean isWebCacheEnabled() {

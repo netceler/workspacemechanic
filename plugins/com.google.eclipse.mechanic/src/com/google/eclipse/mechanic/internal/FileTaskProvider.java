@@ -11,6 +11,7 @@ package com.google.eclipse.mechanic.internal;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -66,6 +67,10 @@ public final class FileTaskProvider extends ResourceTaskProvider {
 
     public File asFile() {
       return file;
+    }
+
+    public String computeMD5() throws IOException {
+      return MD5Utils.md5Hex(newInputStream());
     }
   }
 

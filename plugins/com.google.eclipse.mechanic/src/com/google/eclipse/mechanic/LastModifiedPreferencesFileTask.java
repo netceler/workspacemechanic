@@ -44,6 +44,7 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
 
   private final String id;
   private final String key;
+  private final String md5Key;
 
   public LastModifiedPreferencesFileTask(IResourceTaskReference taskRef) {
     this.taskRef = taskRef;
@@ -51,6 +52,7 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
     Preconditions.checkArgument(file == null || file.canRead(), file + " must be readable");
     this.id = String.format("%s@%s", getClass().getName(), taskRef.getPath());
     this.key = String.format("%s_lastmod", id);
+    this.md5Key = String.format("%s_lastmd5", id);
   }
 
   /**
@@ -66,11 +68,10 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
    * but there is a newer version of the preferences file.
    */
   public boolean evaluate() {
-    long previous = MechanicPreferences.getLong(key);
-    try {
-      return previous > 0L && previous >= taskRef.getLastModified();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    if (MechanicPreferences.isUseMD5()) {
+      return evaluateByMD5();
+    } else {
+      return evaluateByModificationDate();
     }
   }
 
@@ -78,6 +79,7 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
     // grab the lastmod time just before we import the file
     try {
       long lastmod = taskRef.getLastModified();
+      String lastMD5 = taskRef.computeMD5();
 
       // TODO(konigsberg): validate preferences for URIs by storing the contents locally on disk?
 
@@ -88,6 +90,7 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
       if (validStatus.isOK()) {
         transfer();
         MechanicPreferences.setLong(key, lastmod);
+        MechanicPreferences.setString(md5Key, lastMD5);
       } else {
         throw new CoreException(validStatus);
       }
@@ -98,6 +101,36 @@ public abstract class LastModifiedPreferencesFileTask extends CompositeTask {
     }
   }
   
+  private boolean evaluateByMD5() {
+    String previous = MechanicPreferences.getString(md5Key);
+    String current = "";
+    try {
+      current = taskRef.computeMD5();
+      boolean isOk = !"".equals(previous) && previous.equals(current);
+      if (!isOk) {
+        log.logInfo("task must be repaired: %s. MD5 changed from '%s' to '%s'.", taskRef.getName(), previous, current);
+      }
+      return isOk;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private boolean evaluateByModificationDate() {
+    long previous = MechanicPreferences.getLong(key);
+    long current = 0L;
+    try {
+      current = taskRef.getLastModified();
+      boolean isOk = previous > 0L && previous >= current;
+      if (!isOk) {
+        log.logInfo("task must be repaired: %s. Last modified changed from '%d' to '%d'.", taskRef.getName(), previous, current);
+      }
+      return isOk;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   /**
    * Applies preferences from a export file using IPreferenceFilter such that other prefs don't
    * get removed. This allows pref fragment files to do the right thing.

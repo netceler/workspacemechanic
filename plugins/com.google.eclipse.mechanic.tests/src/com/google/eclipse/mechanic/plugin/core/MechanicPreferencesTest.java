@@ -83,6 +83,15 @@ public class MechanicPreferencesTest extends TestCase {
     assertTrue(isShowPopup());
   }
 
+  public void testUseMD5() {
+    useMD5();
+    assertTrue(isUseMD5());
+    doNotUseMD5();
+    assertFalse(isUseMD5());
+    useMD5();
+    assertTrue(isUseMD5());
+  }
+
   public void testCleanSleepSeconds() {
     assertEquals(10, cleanSleepSeconds(8));
     assertEquals(11, cleanSleepSeconds(11));

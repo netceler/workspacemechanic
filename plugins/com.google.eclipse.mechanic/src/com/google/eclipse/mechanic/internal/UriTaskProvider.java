@@ -71,6 +71,10 @@ public final class UriTaskProvider extends ResourceTaskProvider {
     public long getLastModified() throws IOException {
       return longTermCache.lastModifiedTime(uri);
     }
+
+    public String computeMD5() throws IOException {
+      return MD5Utils.md5Hex(newInputStream());
+    }
   }
 
   /**

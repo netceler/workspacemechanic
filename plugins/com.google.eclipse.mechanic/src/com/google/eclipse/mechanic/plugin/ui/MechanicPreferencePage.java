@@ -79,7 +79,11 @@ public class MechanicPreferencePage extends FieldEditorPreferencePage
     addField(new BooleanFieldEditor(MechanicPreferences.SHOW_POPUP_PREF,
         "Show popup when tasks fail", getFieldEditorParent()));
 
-//    addCacheFields(getFieldEditorParent());
+    addField(new BooleanFieldEditor(MechanicPreferences.USE_MD5_PREF,
+        "Use MD5 hash of a task instead of its last modification date to detect that it has changed",
+        getFieldEditorParent()));
+
+    //    addCacheFields(getFieldEditorParent());
   }
 
 //  private void addCacheFields(final Composite parent) {
