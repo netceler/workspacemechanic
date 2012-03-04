@@ -9,9 +9,10 @@
 
 package com.google.eclipse.mechanic;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Models an Eclipse preferences export file as a series of individual
@@ -44,28 +45,30 @@ public abstract class ReconcilingPreferencesTask
    */
   private void initReconcilers() {
 
-    BufferedReader reader = null;
+    InputStream is = null;
+    Properties props = new Properties();
     
     try {
-      reader = new BufferedReader(new InputStreamReader(taskRef.newInputStream()));
+      is = taskRef.newInputStream();
+      props.load(is);
 
-      for (String line = reader.readLine(); line != null;
-          line = reader.readLine()) {
+      for (Entry<Object,Object> e : props.entrySet()) {
 
-        line = line.trim();
+        String key = (String)e.getKey();
+        String value = (String)e.getValue();
 
         // if the line starts with a slash, we treat it as a preference
-        if (line.length() > 0 && line.charAt(0) == '/') {
-          addReconciler(createReconciler(line));
+        if (key.length() > 0 && key.charAt(0) == '/') {
+          addReconciler(createReconciler(key+"="+value));
         }
       }
     } catch (IOException e) {
       throw new RuntimeException(
           "Couldn't read " + taskRef.getPath(), e);
     } finally {
-      if (reader != null) {
+      if (is != null) {
         try {
-          reader.close();
+          is.close();
         } catch (IOException e) {
           throw new RuntimeException("Error occured while trying to " +
               "cleanup from another error. Life sucks.", e);
