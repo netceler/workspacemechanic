@@ -14,6 +14,8 @@ import static java.lang.String.format;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.eclipse.mechanic.internal.Util;
+import com.google.eclipse.mechanic.plugin.core.MechanicLog;
+import com.google.eclipse.mechanic.plugin.core.MechanicPlugin;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -286,7 +288,11 @@ public abstract class PreferenceReconcilerTask extends CompositeTask {
 
     public boolean isReconciled() {
       String value = node.get(pref.getKey(), null);
-      return matcher.matches(value);
+      boolean result = matcher.matches(value);
+      if (!result) {
+        MechanicLog.getDefault().logInfo("Value for key '%s' is not good. Expected %s but was %s", pref.getKey(), pref.getValue(), value);
+      }
+      return result;
     }
 
     public void reconcile() {
