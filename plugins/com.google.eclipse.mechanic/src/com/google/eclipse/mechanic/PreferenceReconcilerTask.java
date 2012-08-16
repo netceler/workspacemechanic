@@ -272,7 +272,11 @@ public abstract class PreferenceReconcilerTask extends CompositeTask {
 
     public boolean isReconciled() {
       String value = node.get(pref.getKey(), null);
-      return matcher.matches(value);
+      boolean result = matcher.matches(value);
+      if (!result) {
+        MechanicLog.getDefault().logInfo("Value for key '%s' is not good. Expected %s but was %s", pref.getKey(), pref.getValue(), value);
+      }
+      return result;
     }
 
     public void reconcile() {
