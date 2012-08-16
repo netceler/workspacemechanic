@@ -9,6 +9,6 @@
   </parent>
   <groupId>com.google.eclipse.mechanic</groupId>
   <artifactId>com.google.eclipse.mechanic</artifactId>
-  <version>0.1.5.3</version>
+  <version>0.3.2.1</version>
   <packaging>eclipse-plugin</packaging>
 </project>

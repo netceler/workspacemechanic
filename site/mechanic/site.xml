@@ -3,7 +3,7 @@
    <description url="http://bguerin.github.com/workspacemechanic">
       Google Workspacemechanic Update Site
    </description>
-   <feature url="features/com.google.eclipse.mechanic_0.1.5.3.jar" id="com.google.eclipse.mechanic" version="0.1.5.3">
+   <feature url="features/com.google.eclipse.mechanic_0.3.2.1.jar" id="com.google.eclipse.mechanic" version="0.3.2.1">
       <category name="Workspacemechanic"/>
    </feature>
    <category-def name="Workspacemechanic" label="Workspacemechanic"/>
