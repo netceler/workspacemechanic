@@ -121,8 +121,8 @@ public abstract class PreferenceReconcilerTask extends CompositeTask {
     Preconditions
         .checkArgument(id.length() > 0, "'id' cannot be empty string.");
     Preconditions.checkNotNull(value, "'value' cannot be null.");
-    Preconditions.checkArgument(value.length() > 0,
-        "'value' cannot be empty string.");
+//    Preconditions.checkArgument(value.length() > 0,
+//        "'value' cannot be empty string.");
 
     final int sli = id.lastIndexOf("/");
 
