@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://bguerin.github.com/workspacemechanic">
+   <description url="http://netceler.github.io/workspacemechanic">
       Google Workspacemechanic Update Site
    </description>
-   <feature url="features/com.google.eclipse.mechanic_0.3.3.1.jar" id="com.google.eclipse.mechanic" version="0.3.3.1">
+   <feature url="features/com.google.eclipse.mechanic_0.3.4.1.jar" id="com.google.eclipse.mechanic" version="0.3.4.1">
       <category name="Workspacemechanic"/>
    </feature>
    <category-def name="Workspacemechanic" label="Workspacemechanic"/>
