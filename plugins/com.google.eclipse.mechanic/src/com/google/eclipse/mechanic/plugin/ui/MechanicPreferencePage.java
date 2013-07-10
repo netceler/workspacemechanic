@@ -28,8 +28,8 @@ import com.google.eclipse.mechanic.MechanicService;
 import com.google.eclipse.mechanic.Task;
 import com.google.eclipse.mechanic.internal.BlockedTaskIdsParser;
 import com.google.eclipse.mechanic.internal.TaskByTitleComparator;
+import com.google.eclipse.mechanic.plugin.core.IMechanicPreferences;
 import com.google.eclipse.mechanic.plugin.core.MechanicPlugin;
-import com.google.eclipse.mechanic.plugin.core.MechanicPreferences;
 
 /**
  * Mechanic preferences page.
@@ -62,26 +62,22 @@ public class MechanicPreferencePage extends FieldEditorPreferencePage
   @Override
   public void createFieldEditors() {
     addField(newMinimumRangeFieldEditor(
-        MechanicPreferences.SLEEPAGE_PREF,
+        IMechanicPreferences.SLEEPAGE_PREF,
         "Task scan frequency (seconds):",
-        MechanicPreferences.MINIMUM_SLEEP_SECONDS,
+        IMechanicPreferences.MINIMUM_SLEEP_SECONDS,
         "Task scan frequency",
         getFieldEditorParent()));
 
-    addField(new DirectoryOrUrlEditor(MechanicPreferences.DIRS_PREF,
+    addField(new DirectoryOrUrlEditor(IMechanicPreferences.DIRS_PREF,
         "Task sources:", getFieldEditorParent()));
 
-    blockedEditor = new BlockedTaskEditor(MechanicPreferences.BLOCKED_PREF,
+    blockedEditor = new BlockedTaskEditor(IMechanicPreferences.BLOCKED_PREF,
         "Blocked tasks:", getFieldEditorParent());
 
     addField(blockedEditor);
 
-    addField(new BooleanFieldEditor(MechanicPreferences.SHOW_POPUP_PREF,
+    addField(new BooleanFieldEditor(IMechanicPreferences.SHOW_POPUP_PREF,
         "Show popup when tasks fail", getFieldEditorParent()));
-
-    addField(new BooleanFieldEditor(MechanicPreferences.USE_MD5_PREF,
-        "Use MD5 hash of a task instead of its last modification date to detect that it has changed",
-        getFieldEditorParent()));
 
     //    addCacheFields(getFieldEditorParent());
   }
